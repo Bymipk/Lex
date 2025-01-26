@@ -1,6 +1,7 @@
-import { FlatConfig } from 'eslint';
+import pkg from 'eslint';
+const { FlatConfig } = pkg;
 
-const config = {
+const config = new FlatConfig({
   files: ['{src,apps,libs,test}/**/*.ts'],
   languageOptions: {
     parser: '@typescript-eslint/parser',  // Set the parser here
@@ -22,6 +23,6 @@ const config = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',  // Disable the problematic rule
   },
-};
+});
 
 export default config;
