@@ -1,0 +1,39 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests targeting the main branch
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]  # Test against multiple Node.js versions
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint code
+        run: npm run lint  # Ensure a 'lint' script is defined in your package.json
+
+      - name: Run tests
+        run: npm test  # Ensure a 'test' script is defined in your package.json
+
+      - name: Build application
+        run: npm run build  # If applicable, ensure a 'build' script is defined in your package.json
