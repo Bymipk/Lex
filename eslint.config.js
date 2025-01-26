@@ -1,10 +1,14 @@
 /** @type {import('eslint').Linter.Config} */
-module.exports = {
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: 'tsconfig.json',
-    tsconfigRootDir: __dirname,
-    sourceType: 'module',
+import { defineConfig } from 'eslint-define-config';
+
+export default defineConfig({
+  languageOptions: {
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+      project: 'tsconfig.json',
+      tsconfigRootDir: __dirname,
+      sourceType: 'module',
+    },
   },
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
@@ -24,4 +28,4 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',  // Disable the problematic rule
   },
-};
+});
