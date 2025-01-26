@@ -1,9 +1,9 @@
-/** @type {import('eslint').Linter.Config} */
-import { defineConfig } from 'eslint-define-config';
+import { FlatConfig } from 'eslint';
 
-export default defineConfig({
+const config = {
+  files: ['{src,apps,libs,test}/**/*.ts'],
   languageOptions: {
-    parser: '@typescript-eslint/parser',
+    parser: '@typescript-eslint/parser',  // Set the parser here
     parserOptions: {
       project: 'tsconfig.json',
       tsconfigRootDir: __dirname,
@@ -15,12 +15,6 @@ export default defineConfig({
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
   ],
-  root: true,
-  env: {
-    node: true,
-    jest: true,
-  },
-  ignorePatterns: ['eslint.config.js'],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
@@ -28,4 +22,6 @@ export default defineConfig({
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',  // Disable the problematic rule
   },
-});
+};
+
+export default config;
