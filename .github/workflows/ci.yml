@@ -3,10 +3,11 @@ name: Node.js CI
 on:
   push:
     branches:
-      - master  # Change from 'main' to 'master'
+      - master
+      - 'patch/*'  # Triggers on any push to a branch that starts with "patch/"
   pull_request:
     branches:
-      - master  # Change from 'main' to 'master'
+      - master
 
 jobs:
   build-and-test:
@@ -37,3 +38,29 @@ jobs:
 
       - name: Build application
         run: npm run build  # If applicable, ensure a 'build' script is defined in your package.json
+
+      - name: Determine new version and update package.json
+        run: |
+          # Get the current version from package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version: $CURRENT_VERSION"
+          
+          # Use semver to bump the version (patch in this case)
+          NEW_VERSION=$(npm version patch --no-git-tag-version)
+          echo "New version: $NEW_VERSION"
+          
+          # Commit the version bump
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add package.json
+          git commit -m "Bump version to $NEW_VERSION"
+          
+          # Push the changes to the branch
+          git push origin HEAD
+          
+      - name: Create a version tag
+        run: |
+          # Create a new Git tag for the version update
+          NEW_TAG=$(node -p "require('./package.json').version")
+          git tag "v$NEW_TAG"
+          git push origin "v$NEW_TAG"

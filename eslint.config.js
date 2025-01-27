@@ -32,4 +32,4 @@ const config = new FlatConfig({
   },
 });
 
-export default config;
+export default config;  // Ensure 'config' is defined correctly
