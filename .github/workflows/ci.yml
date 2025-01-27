@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - master
-      - 'patch/*'  # Triggers on any push to a branch that starts with "patch/"
+      - 'patch/*'   # Triggers on any push to a branch that starts with "patch/"
+      - 'feature/*' # Triggers on any push to a branch that starts with "feature/"
   pull_request:
     branches:
       - master
@@ -40,6 +41,7 @@ jobs:
         run: npm run build  # If applicable, ensure a 'build' script is defined in your package.json
 
       - name: Determine new version and update package.json
+        id: version
         run: |
           # Get the current version from package.json
           CURRENT_VERSION=$(node -p "require('./package.json').version")
@@ -48,6 +50,7 @@ jobs:
           # Use semver to bump the version (patch in this case)
           NEW_VERSION=$(npm version patch --no-git-tag-version)
           echo "New version: $NEW_VERSION"
+          echo "version=$NEW_VERSION" >> $GITHUB_ENV
           
           # Commit the version bump
           git config user.name "GitHub Actions"
@@ -58,7 +61,8 @@ jobs:
           # Push the changes to the branch
           git push origin HEAD
           
-      - name: Create a version tag
+      - name: Create and push version tag
+        if: ${{ startsWith(github.ref, 'refs/heads/patch/') || startsWith(github.ref, 'refs/heads/feature/') || github.ref == 'refs/heads/master' }}
         run: |
           # Create a new Git tag for the version update
           NEW_TAG=$(node -p "require('./package.json').version")
