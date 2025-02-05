@@ -7,9 +7,10 @@ import { HelloService } from './services/hello.service'; // Correct relative imp
 import { CustomerController } from './routers/customer/customer.controller'; // Corrected relative import
 import { HealthModule } from './routers/health/health.module'; // Correct relative import
 import {UserFinanceModule} from './routers/user_finance/user_finance.module'
+import { CustomerModule } from './routers/customer/customer.module';
 
 @Module({
-  imports: [HealthModule,UserFinanceModule],
+  imports: [HealthModule,UserFinanceModule,CustomerModule],
   controllers: [AppController, HelloController, HealthController, CustomerController], // Ensure CustomerController is listed here
   providers: [AppService, HelloService],
 })
